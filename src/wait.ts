@@ -57,7 +57,7 @@ export class Waiter implements Wait {
         .sort((a, b) => b.id - a.id);
       if (newerRuns && newerRuns.length > 0) {
         this.info(
-          `🏃Detected more up-to-date workflow in progress. Aborting...😴`
+          `🏃Detected more up-to-date workflow in progress. Canceling...😴`
         );
         notice("⚡⚡⚡ Skipped ⚡⚡⚡");
         this.cancelWorkflow();
@@ -96,6 +96,16 @@ export class Waiter implements Wait {
         `Error canceling workflow, status: ${res.status}, response: ${res.data}`
       );
     }
+
+    // force the cancellation to happen on this action
+    const twoMinutes = 120 * 1000;
+    await new Promise(() =>
+      setTimeout(() => {
+        throw new Error(
+          `Workflow still not canceled after two minutes, but the response was success. Check API status: githubstatus.com.`
+        );
+      }, twoMinutes)
+    );
     return;
   };
 }
