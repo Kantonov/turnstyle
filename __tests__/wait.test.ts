@@ -193,57 +193,6 @@ describe("wait", () => {
           `✋Awaiting run ${input.runId - 1} ...`
         );
       });
-
-      it("will return is there are newer runs", async () => {
-        input.cancelIfNotLatest = true;
-        const inProgressRuns = [
-          {
-            id: 1,
-            status: "in_progress",
-            html_url: "1",
-          },
-          {
-            id: 2,
-            status: "in_progress",
-            html_url: "2",
-          },
-          {
-            id: 3,
-            status: "in_progress",
-            html_url: "3",
-          },
-        ];
-        // Give the current run an id that makes it the first in the queue.
-        input.runId = 1;
-
-        const mockedRunsFunc = jest.fn();
-        mockedRunsFunc.mockReturnValueOnce(Promise.resolve(inProgressRuns));
-
-        const githubClient = {
-          runs: mockedRunsFunc,
-          run: jest.fn(),
-          workflows: async (owner: string, repo: string) =>
-            Promise.resolve([workflow]),
-        };
-
-        const messages: Array<string> = [];
-        const waiter = new Waiter(
-          workflow.id,
-          githubClient,
-          input,
-          (message: string) => {
-            messages.push(message);
-          }
-        );
-        await waiter.wait();
-        // Verify that the first message printed is that the run is canceled.
-        const latestPreviousRun = inProgressRuns[0];
-        console.log(messages);
-        assert.deepEqual(
-          messages[0],
-          `🏃Detected more up-to-date workflow in progress. Canceling...😴`
-        );
-      });
     });
   });
 });
