@@ -49,6 +49,17 @@ export class Waiter implements Wait {
       this.input.sameBranchOnly ? this.input.branch : undefined,
       this.workflowId
     );
+
+    if (this.input.cancelIfNotLatest) {
+      const newerRuns = runs
+        .filter((run) => run.id > this.input.runId)
+        .sort((a, b) => b.id - a.id);
+      if (newerRuns && newerRuns.length > 0) {
+        this.info(`🚄🚄🚄Detected newer deployment waiting. Aborting...`);
+        return;
+      }
+    }
+
     const previousRuns = runs
       .filter((run) => run.id < this.input.runId)
       .sort((a, b) => b.id - a.id);

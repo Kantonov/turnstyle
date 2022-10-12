@@ -14,6 +14,7 @@ describe("input", () => {
           "INPUT_CONTINUE-AFTER-SECONDS": "10",
           "INPUT_POLL-INTERVAL-SECONDS": "5",
           "INPUT_SAME-BRANCH-ONLY": "false",
+          "INPUT_CANCEL-IF-NOT-LATEST": "true",
         }),
         {
           githubToken: "s3cr3t",
@@ -26,6 +27,7 @@ describe("input", () => {
           abortAfterSeconds: undefined,
           pollIntervalSeconds: 5,
           sameBranchOnly: false,
+          cancelIfNotLatest: true,
         }
       );
     });
@@ -53,6 +55,7 @@ describe("input", () => {
           abortAfterSeconds: 10,
           pollIntervalSeconds: 5,
           sameBranchOnly: false,
+          cancelIfNotLatest: false,
         }
       );
     });
@@ -94,6 +97,7 @@ describe("input", () => {
           abortAfterSeconds: undefined,
           pollIntervalSeconds: 60,
           sameBranchOnly: true,
+          cancelIfNotLatest: false,
         }
       );
     });
@@ -119,6 +123,7 @@ describe("input", () => {
           abortAfterSeconds: undefined,
           pollIntervalSeconds: 60,
           sameBranchOnly: true,
+          cancelIfNotLatest: false,
         }
       );
     });
