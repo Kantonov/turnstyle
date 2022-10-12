@@ -9,6 +9,7 @@ export interface Input {
   continueAfterSeconds: number | undefined;
   abortAfterSeconds: number | undefined;
   sameBranchOnly: boolean;
+  cancelIfNotLatest: boolean;
 }
 
 export const parseInput = (env: Record<string, string | undefined>): Input => {
@@ -34,6 +35,8 @@ export const parseInput = (env: Record<string, string | undefined>): Input => {
   }
   const sameBranchOnly =
     env["INPUT_SAME-BRANCH-ONLY"] === "true" || !env["INPUT_SAME-BRANCH-ONLY"]; // true if not specified
+  const cancelIfNotLatest =
+    env["INPUT_CANCEL-IF-NOT-LATEST"] === "true" || false; // false if not specified
   return {
     githubToken,
     owner,
@@ -45,5 +48,6 @@ export const parseInput = (env: Record<string, string | undefined>): Input => {
     continueAfterSeconds,
     abortAfterSeconds,
     sameBranchOnly,
+    cancelIfNotLatest,
   };
 };
