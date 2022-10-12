@@ -241,7 +241,7 @@ describe("wait", () => {
         console.log(messages);
         assert.deepEqual(
           messages[0],
-          `🏃Detected more up-to-date workflow in progress. Aborting...😴`
+          `🏃Detected more up-to-date workflow in progress. Canceling...😴`
         );
       });
     });
