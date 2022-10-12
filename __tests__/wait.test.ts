@@ -241,7 +241,7 @@ describe("wait", () => {
         console.log(messages);
         assert.deepEqual(
           messages[0],
-          `🚄🚄🚄Detected newer deployment waiting. Aborting...`
+          `🏃Detected more up-to-date workflow in progress. Aborting...😴`
         );
       });
     });

@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@actions/github": "^5.1.1",
     "@octokit/plugin-throttling": "^3.3.4",
     "@octokit/rest": "^16.43.2"
   },

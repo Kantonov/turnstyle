@@ -7,7 +7,6 @@ import { Waiter } from "./wait";
 async function run() {
   try {
     const input = parseInput(env);
-    console.log(`[DEBUG] cancelIfNotLatest value: ${input.cancelIfNotLatest}`);
     const github = new OctokitGitHub(input.githubToken);
     const workflows = await github.workflows(input.owner, input.repo);
     const workflow_id = workflows.find(

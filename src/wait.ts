@@ -1,6 +1,7 @@
 import { Run, OctokitGitHub, GitHub } from "./github";
 import { Input, parseInput } from "./input";
-import { setOutput } from "@actions/core";
+import { setOutput, notice } from "@actions/core";
+import * as github from "@actions/github";
 
 export interface Wait {
   wait(secondsSoFar?: number): Promise<number>;
@@ -55,7 +56,11 @@ export class Waiter implements Wait {
         .filter((run) => run.id > this.input.runId)
         .sort((a, b) => b.id - a.id);
       if (newerRuns && newerRuns.length > 0) {
-        this.info(`🚄🚄🚄Detected newer deployment waiting. Aborting...`);
+        this.info(
+          `🏃Detected more up-to-date workflow in progress. Aborting...😴`
+        );
+        notice("⚡⚡⚡ Skipped ⚡⚡⚡");
+        this.cancelWorkflow();
         return;
       }
     }
@@ -74,5 +79,23 @@ export class Waiter implements Wait {
       setTimeout(resolve, this.input.pollIntervalSeconds * 1000)
     );
     return this.wait((secondsSoFar || 0) + this.input.pollIntervalSeconds);
+  };
+
+  cancelWorkflow = async () => {
+    const octokit = github.getOctokit(this.input.githubToken);
+    const owner = this.input.owner;
+    const repo = this.input.repo;
+    const id = this.input.runId;
+    const res = await octokit.rest.actions.cancelWorkflowRun({
+      owner,
+      repo,
+      run_id: id,
+    });
+    if (res.status != 202) {
+      throw new Error(
+        `Error canceling workflow, status: ${res.status}, response: ${res.data}`
+      );
+    }
+    return;
   };
 }

@@ -20,7 +20,7 @@ inputs:
     description: "Cancel the current workflow if there are newer waiting (defaults to false)"
 outputs:
   force_continued:
-    description: "True if continue-after-seconds is used and the step using turnstyle continued. False otherwise."
+    description: "True if continue-after-seconds is used and the step using turnstyle continued. False otherwise"
 branding:
   color: 'green'
   icon: 'git-commit'
