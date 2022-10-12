@@ -1,7 +1,7 @@
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
-name: 'action turnstyle'
+name: 'action turnstyle-with-cancel'
 description: 'A GitHub Action for serializing workflow runs'
-author: 'softprops'
+author: 'Kantonov'
 env:
   'GITHUB_TOKEN': 'Repository token provided by Github Actions secrets'
 runs:
