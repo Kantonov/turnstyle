@@ -16,6 +16,10 @@
 
 <br />
 
+## TODOs:
+- Bump the node version
+- Fix set outputs
+
 ## 🤔 why bother
 
 GitHub Actions is an event-oriented system. Your workflows run in response to events and are triggered independently and without coordination. In a shared repository, if two or more people merge pull requests, each will trigger workflows without regard to one another.
