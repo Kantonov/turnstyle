@@ -16,6 +16,13 @@
 
 <br />
 
+## Fork Changelog
+
+- Added cancellation option:
+  -   cancel-if-not-latest:
+      description: "Cancel the current workflow if there are newer waiting (defaults to false)"
+- Uses Node 16
+
 ## 🤔 why bother
 
 GitHub Actions is an event-oriented system. Your workflows run in response to events and are triggered independently and without coordination. In a shared repository, if two or more people merge pull requests, each will trigger workflows without regard to one another.
@@ -154,6 +161,7 @@ jobs:
 | `abort-after-seconds`   | number  | Maximum number of seconds to wait before aborting the job (unbound by default). Mutually exclusive with continue-after-seconds |
 | `poll-interval-seconds` | number  | Number of seconds to wait in between checks for previous run completion (defaults to 60)                                       |
 | `same-branch-only`      | boolean | Only wait on other runs from the same branch (defaults to true)                                                                |
+| `cancel-if-not-latest`  | boolean | Cancel the current workflow if there are newer waiting (defaults to false)                                                     |
 
 #### outputs
 
