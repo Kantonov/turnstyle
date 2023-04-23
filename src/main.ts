@@ -16,7 +16,11 @@ async function run() {
       await new Waiter(workflow_id, github, input, info).wait();
     }
   } catch (error) {
-    setFailed(error.message);
+    let errorMessage = "Unknown exception";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    setFailed(errorMessage);
   }
 }
 
