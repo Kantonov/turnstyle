@@ -1,6 +1,6 @@
 import { Run, OctokitGitHub, GitHub } from "./github";
 import { Input, parseInput } from "./input";
-import { setOutput, notice } from "@actions/core";
+import * as core from "@actions/core";
 import * as github from "@actions/github";
 
 export interface Wait {
@@ -31,7 +31,7 @@ export class Waiter implements Wait {
       (secondsSoFar || 0) >= this.input.continueAfterSeconds
     ) {
       this.info(`🤙Exceeded wait seconds. Continuing...`);
-      setOutput("force_continued", "1");
+      core.setOutput("force_continued", "1");
       return secondsSoFar || 0;
     }
 
@@ -40,7 +40,7 @@ export class Waiter implements Wait {
       (secondsSoFar || 0) >= this.input.abortAfterSeconds
     ) {
       this.info(`🛑Exceeded wait seconds. Aborting...`);
-      setOutput("force_continued", "");
+      core.setOutput("force_continued", "");
       throw new Error(`Aborted after waiting ${secondsSoFar} seconds`);
     }
 
@@ -59,7 +59,7 @@ export class Waiter implements Wait {
         this.info(
           `🏃Detected more up-to-date workflow in progress. Canceling...😴`
         );
-        notice("⚡⚡⚡ Skipped ⚡⚡⚡");
+        core.notice("⚡⚡⚡ Skipped ⚡⚡⚡");
         this.cancelWorkflow();
         return;
       }
@@ -69,7 +69,7 @@ export class Waiter implements Wait {
       .filter((run) => run.id < this.input.runId)
       .sort((a, b) => b.id - a.id);
     if (!previousRuns || !previousRuns.length) {
-      setOutput("force_continued", "");
+      core.setOutput("force_continued", "");
       return;
     }
 
