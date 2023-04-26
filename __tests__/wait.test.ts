@@ -2,7 +2,12 @@ import * as assert from "assert";
 
 import { Waiter } from "../src/wait";
 import { Input } from "../src/input";
-import { Workflow, Run } from "../src/github";
+import { getMockedRun } from "./mock";
+import { OctokitGitHub as GitHub } from "../src/github";
+import { components } from "@octokit/openapi-types";
+
+type Run = components["schemas"]["workflow-run"];
+type Workflow = components["schemas"]["workflow"]
 
 describe("wait", () => {
   describe("Waiter", () => {
@@ -11,6 +16,14 @@ describe("wait", () => {
       const workflow: Workflow = {
         id: 123124,
         name: "Test workflow",
+        node_id: "",
+        path: "",
+        state: "active",
+        created_at: "",
+        updated_at: "",
+        url: "",
+        html_url: "",
+        badge_url: ""
       };
 
       beforeEach(() => {
@@ -36,7 +49,7 @@ describe("wait", () => {
           status: "in_progress",
           html_url: "",
         };
-        const githubClient = {
+        const githubClient = ({
           runs: async (
             owner: string,
             repo: string,
@@ -45,7 +58,7 @@ describe("wait", () => {
           ) => Promise.resolve([inProgressRun]),
           workflows: async (owner: string, repo: string) =>
             Promise.resolve([workflow]),
-        };
+        } as GitHub);
 
         const messages: Array<string> = [];
         const waiter = new Waiter(
@@ -70,7 +83,7 @@ describe("wait", () => {
           status: "in_progress",
           html_url: "",
         };
-        const githubClient = {
+        const githubClient = ({
           runs: async (
             owner: string,
             repo: string,
@@ -79,7 +92,7 @@ describe("wait", () => {
           ) => Promise.resolve([inProgressRun]),
           workflows: async (owner: string, repo: string) =>
             Promise.resolve([workflow]),
-        };
+        } as GitHub);
 
         const messages: Array<string> = [];
         const waiter = new Waiter(
@@ -101,12 +114,7 @@ describe("wait", () => {
       });
 
       it("will return when a run is completed", async () => {
-        const run: Run = {
-          id: 1,
-          status: "in_progress",
-          html_url: "1",
-        };
-
+        const run = getMockedRun(undefined);
         const mockedRunsFunc = jest
           .fn()
           .mockReturnValueOnce(Promise.resolve([run]))
