@@ -1,7 +1,8 @@
-import { Run, OctokitGitHub, GitHub } from "./github";
-import { Input, parseInput } from "./input";
+import { OctokitGitHub as GitHub } from "./github";
+import { Input } from "./input";
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import { components } from "@octokit/openapi-types";
 
 export interface Wait {
   wait(secondsSoFar?: number): Promise<number>;
@@ -15,7 +16,7 @@ export class Waiter implements Wait {
 
   constructor(
     workflowId: any,
-    githubClient: GitHub,
+    githubClient: GitHub | any,
     input: Input,
     info: (msg: string) => void
   ) {
@@ -44,12 +45,15 @@ export class Waiter implements Wait {
       throw new Error(`Aborted after waiting ${secondsSoFar} seconds`);
     }
 
-    const runs = await this.githubClient.runs(
+    const runsData = await this.githubClient.runs(
       this.input.owner,
       this.input.repo,
       this.input.sameBranchOnly ? this.input.branch : undefined,
       this.workflowId
     );
+
+    type GitHubWorkflowRun = components["schemas"]["workflow-run"];
+    const runs: GitHubWorkflowRun[] = runsData as GitHubWorkflowRun[];
 
     if (this.input.cancelIfNotLatest) {
       const newerRuns = runs
