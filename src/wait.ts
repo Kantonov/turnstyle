@@ -68,7 +68,7 @@ export class Waiter implements Wait {
         return;
       }
     }
-    
+
     const previousRuns = runs
       .filter((run) => run.id < this.input.runId)
       .sort((a, b) => b.id - a.id);

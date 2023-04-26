@@ -40,10 +40,10 @@ export class OctokitGitHub {
   }
 
   workflows = async (owner: string, repo: string) =>
-  this.octokit.paginate(this.octokit.actions.listRepoWorkflows, {
-    owner,
-    repo,
-  });
+    this.octokit.paginate(this.octokit.actions.listRepoWorkflows, {
+      owner,
+      repo,
+    });
 
   runs = async (
     owner: string,
@@ -51,13 +51,13 @@ export class OctokitGitHub {
     branch: string | undefined,
     workflow_id: number
   ) => {
-    const options: Endpoints["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"]["parameters"] = 
-    {
-      owner,
-      repo,
-      workflow_id,
-      status: "in_progress",
-    };
+    const options: Endpoints["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"]["parameters"] =
+      {
+        owner,
+        repo,
+        workflow_id,
+        status: "in_progress",
+      };
 
     if (branch) {
       options.branch = branch;
