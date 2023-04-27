@@ -1,17 +1,7 @@
 import { Octokit } from "@octokit/rest";
 import { debug, warning } from "@actions/core";
 import { Endpoints } from "@octokit/types";
-
-// export interface Workflow {
-//   id: number;
-//   name: string;
-// }
-
-// export interface Run {
-//   id: number;
-//   status: string;
-//   html_url: string;
-// }
+import { components } from "@octokit/openapi-types";
 
 export class OctokitGitHub {
   private readonly octokit: Octokit;
@@ -56,15 +46,23 @@ export class OctokitGitHub {
         owner,
         repo,
         workflow_id,
-        status: "in_progress",
       };
 
     if (branch) {
       options.branch = branch;
     }
 
-    return this.octokit.paginate(
+    type GitHubWorkflowRun = components["schemas"]["workflow-run"];
+
+    const allRuns = await this.octokit.paginate(
       this.octokit.actions.listWorkflowRuns.endpoint.merge(options)
     );
+
+    // Filter the runs with "in_progress" status
+    const inProgressRuns = allRuns.filter(
+      (run) => (run as GitHubWorkflowRun).status === "in_progress"
+    );
+
+    return inProgressRuns;
   };
 }

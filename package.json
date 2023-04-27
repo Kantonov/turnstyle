@@ -29,7 +29,8 @@
     "@actions/github": "^5.1.1",
     "@octokit/plugin-throttling": "^5.1.1",
     "@octokit/rest": "^19.0.7",
-    "@octokit/types": "^9.1.2"
+    "@octokit/types": "^9.1.2",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
